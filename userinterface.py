@@ -16,7 +16,7 @@ words = st.sidebar.selectbox("No.of Words", range(10,1000,10))
 st.title('Market Basket Analysis')
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.sidebar.header("Select Item")
-Input = st.sidebar.selectbox('Object Variables', new_df["Bought Item"])
+Input = st.sidebar.selectbox('Object Variables', list(set(new_df["Bought Item"])))
 print(Input)
 sample = new_df[new_df['Bought Item'] == Input]
 lis1 = []

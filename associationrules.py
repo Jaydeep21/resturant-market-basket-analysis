@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pymongo import MongoClient
 
   
-client = MongoClient("localhost", 27017)
+client = MongoClient("mongodb+srv://brogrammers:f43op3GduCWsG3OQ@cluster0.naknivb.mongodb.net/?retryWrites=true&w=majority")
 db = client["adtProject"]
 dataset = pd.DataFrame(db["resturant"].find({}))
 dim = dataset.shape
