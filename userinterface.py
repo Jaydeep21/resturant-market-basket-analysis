@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pymongo import MongoClient
 import os
   
-client = MongoClient(os.environ['MONGO_URL'])
+client = MongoClient( st.secrets["MONGO_URL"])
 db = client["adtProject"]
 new_df = pd.DataFrame(db["rules"].find({}))
 words = st.sidebar.selectbox("No.of Words", range(10,1000,10))
