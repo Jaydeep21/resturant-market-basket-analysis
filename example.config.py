@@ -1,1 +1,3 @@
-MONGO_URL=""
+# config.py
+class DB:
+    MONGO_URL=""
