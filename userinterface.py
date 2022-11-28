@@ -12,7 +12,10 @@ client = MongoClient( st.secrets["MONGO_URL"])
 db = client["adtProject"]
 
 #fethcing all rules from the collection
-new_df = pd.DataFrame(db["rules"].find({}))
+apriori_rules = pd.DataFrame(db["rules"].find({}))
+
+#fethcing all rules from the collection
+fp_rules = pd.DataFrame(db["fp_rules"].find({}))
 
 #dropdown for the number of suggestions
 words = st.sidebar.selectbox("No.of Words", range(10,1000,10))
@@ -25,33 +28,61 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 #setting header
 st.header("Select Item")
+temp = []
+temp.extend(apriori_rules["Bought Item"])
+temp.extend(fp_rules["Bought Item"])
 
+# print(apriori_rules["Bought Item"].extend(fp_rules["Bought Item"]))
 #taking multiple inputs from user
 input = st.multiselect(
     'What are your favorite dishes',
-    list(set(new_df["Bought Item"])))
+    list(set(temp)))
 
 #processing input and getting list of items expected to buy
-sample = new_df 
+sample = apriori_rules 
 if input:
-    sample = new_df[new_df['Bought Item'].isin(input)]
-lis1 = []
-for i in sample["Expected To Be Bought"]:
-    lis1.append(i)
-space = " "
-output = space.join(lis1)
-#cleaning data
-output_final = output.replace("nan", "")
-output_final = output.replace("None", "")
-op = set(lis1)
-if "None" in op:
-    op.remove("None")
-st.write(op)
-st.header("Word Cloud Plot")
+    sample = apriori_rules[apriori_rules['Bought Item'].isin(input)]
+    lis1 = []
+    for i in sample["Expected To Be Bought"]:
+        lis1.append(i)
+    space = " "
+    output = space.join(lis1)
+    #cleaning data
+    output_final = output.replace("nan", "")
+    output_final = output.replace("None", "")
+    op = set(lis1)
+    if "None" in op:
+        op.remove("None")
+    st.write(op)
+    st.header("Word Cloud Plot")
 
-#developing wordcloud from the result
-wordcloud = WordCloud(background_color="white", max_words=words).generate(output_final)
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis("off")
-plt.show()
-st.pyplot()
+    #developing wordcloud from the result
+    wordcloud = WordCloud(background_color="white", max_words=words).generate(output_final)
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    plt.show()
+    st.pyplot()
+
+sample = fp_rules 
+if input:
+    sample = fp_rules[fp_rules['Bought Item'].isin(input)]
+    lis1 = []
+    for i in sample["Expected To Be Bought"]:
+        lis1.append(i)
+    space = " "
+    output = space.join(lis1)
+    #cleaning data
+    output_final = output.replace("nan", "")
+    output_final = output.replace("None", "")
+    op = set(lis1)
+    if "None" in op:
+        op.remove("None")
+    st.write(op)
+    st.header("Word Cloud Plot")
+
+    #developing wordcloud from the result
+    wordcloud = WordCloud(background_color="white", max_words=words).generate(output_final)
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    plt.show()
+    st.pyplot()
