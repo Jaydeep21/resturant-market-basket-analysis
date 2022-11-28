@@ -5,8 +5,8 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
   
-# client = MongoClient( st.secrets["MONGO_URL"])
-client = MongoClient("localhost", 27017)
+client = MongoClient( st.secrets["MONGO_URL"])
+# client = MongoClient("localhost", 27017)
 
 #accessing db
 db = client["adtProject"]
